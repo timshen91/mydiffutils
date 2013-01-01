@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char * argv[]) {
 	if (argc != 3) {
-		cout << "Usage : old_file diff_file\n";
+		cout << "Usage : " << argv[0] << " old_file diff_file\n";
 		return 1;
 	}
 	string temp;

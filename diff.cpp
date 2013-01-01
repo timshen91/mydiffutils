@@ -1,8 +1,9 @@
-// Slow and dirty dynamic programming algorithm(O(n^2)), with limitation(4096) of lines of input.
+// Slow and dirty dynamic programming algorithm(O(n^2)), with limitation(4095) of input lines.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cassert>
 
 using namespace std;
 
@@ -50,18 +51,17 @@ int main(int argc, char * argv[]) {
 		}
 	}
 	pair<unsigned int, unsigned int> now = make_pair(s1.size(), s2.size()), last;
-	vector<pair<unsigned int, unsigned int> > ans;
-	while (now.first != 0 && now.second != 0) {
+	vector<pair<unsigned int, unsigned int> > ans(f[s1.size()][s2.size()] + 1);
+	int i = ans.size() - 1;
+	while (f[now.first][now.second] != 0) {
 		last = now;
 		now = pre[now.first][now.second];
-		if (f[now.first][now.second] + 1 == f[last.first][last.second]) {
-			ans.push_back(last);
+		if (f[now.first][now.second] < f[last.first][last.second]) {
+			ans[--i] = last;
 		}
 	}
-	for (unsigned int i = 0, j = ans.size() - 1; i < j; i++, j--) {
-		swap(ans[i], ans[j]);
-	}
-	ans.push_back(make_pair(s1.size() + 1, s2.size() + 1));
+	assert(i == 0);
+	ans.back() = make_pair(s1.size() + 1, s2.size() + 1);
 	unsigned int l = 1, r = 1;
 	for (unsigned int i = 0; i < ans.size(); i++) {
 		if (l < ans[i].first || r < ans[i].second) {
